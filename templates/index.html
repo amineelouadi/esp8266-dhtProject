@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature & Humidity Monitor</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Temperature & Humidity Monitor</h1>
+        <div class="sensor-cards">
+            <div class="card temperature">
+                <h2>Temperature</h2>
+                <div class="reading">
+                    <span id="temperature">--</span>°C
+                </div>
+                <div class="reading-f">
+                    <span id="temperature-f">--</span>°F
+                </div>
+                <div class="status" id="temperature-status">Status: --</div>
+            </div>
+            <div class="card humidity">
+                <h2>Humidity</h2>
+                <div class="reading">
+                    <span id="humidity">--</span>%
+                </div>
+                <div class="status" id="humidity-status">Status: --</div>
+            </div>
+        </div>
+        <div class="device-info">
+            <p>Device ID: <span id="device-id">--</span></p>
+            <p>Last Update: <span id="last-update">--</span></p>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

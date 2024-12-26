@@ -1,0 +1,7 @@
+{
+  "name": "temp-humidity-api",
+  "private": true,
+  "scripts": {
+    "start": "python manage.py runserver 0.0.0.0:8000"
+  }
+}
