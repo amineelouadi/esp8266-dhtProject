@@ -16,10 +16,13 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
-                    sonar-scanner \
+                    docker run --rm \
+                        --network jenkins-sonarqube-network \
+                        -e SONAR_TOKEN=$SONAR_TOKEN \
+                        sonarsource/sonar-scanner-cli \
                         -Dsonar.projectKey=esp8266-dhtproject \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.host.url=http://sonarqube:9000 \
                         -Dsonar.login=$SONAR_TOKEN
                     """
                 }
