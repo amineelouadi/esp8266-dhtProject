@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = "amineelouadi/esp8266-dhtproject"
+        SONAR_HOST_URL = "http://sonarqube:9000" // Use the service name in the Docker network
     }
 
     stages {
@@ -16,14 +17,11 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
-                    docker run --rm \
-                        --network jenkins-sonarqube-network \
-                        -e SONAR_TOKEN=$SONAR_TOKEN \
-                        sonarsource/sonar-scanner-cli \
+                    sonar-scanner \
                         -Dsonar.projectKey=esp8266-dhtproject \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://sonarqube:9000 \
-                        -Dsonar.login=$SONAR_TOKEN
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_TOKEN}
                     """
                 }
             }
@@ -39,7 +37,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE_NAME}:latest .'
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
             }
         }
 
@@ -48,9 +46,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', 
                                                   passwordVariable: 'DOCKER_PASSWORD', 
                                                   usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                 }
-                sh 'docker push ${DOCKER_IMAGE_NAME}:latest'
+                sh "docker push ${DOCKER_IMAGE_NAME}:latest"
             }
         }
 
