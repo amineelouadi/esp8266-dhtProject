@@ -13,11 +13,22 @@ pipeline {
             }
         }
 
+        stage('Install sudo and Dependencies') {
+            steps {
+                script {
+                    // Install sudo if it's not already available
+                    sh 'apt-get update && apt-get install -y sudo'
+                    // Install Node.js and npm
+                    sh 'sudo curl -sL https://deb.nodesource.com/setup_16.x | bash -'
+                    sh 'sudo apt-get install -y nodejs'
+                }
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Use the SonarQube Scanner plugin
-                    def scannerHome = tool 'SonarQube Scanner' // Ensure this matches the name configured in Jenkins
+                    def scannerHome = tool 'SonarQube Scanner'
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh """
                         ${scannerHome}/bin/sonar-scanner \
@@ -27,17 +38,6 @@ pipeline {
                             -Dsonar.login=${SONAR_TOKEN}
                         """
                     }
-                }
-            }
-        }
-
-        stage('Install Node.js and npm') {
-            steps {
-                script {
-                    // Install Node.js and npm with sudo (make sure sudo is installed)
-                    sh 'apt-get update && apt-get install -y sudo'
-                    sh 'sudo curl -sL https://deb.nodesource.com/setup_16.x | bash -'
-                    sh 'sudo apt-get install -y nodejs'
                 }
             }
         }
