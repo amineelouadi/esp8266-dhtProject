@@ -12,15 +12,29 @@ pipeline {
             }
         }
 
+        stage('Install SonarQube Scanner') {
+            steps {
+                sh '''
+                # Install SonarQube Scanner
+                apt-get update
+                apt-get install -y wget unzip
+                wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+                unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d /opt
+                ln -s /opt/sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner
+                '''
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    sh '''
-                    sonar-scanner -Dsonar.projectKey=esp8266-dhtproject \
+                    sh """
+                    sonar-scanner \
+                        -Dsonar.projectKey=esp8266-dhtproject \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://sonarqube:9000 \
                         -Dsonar.login=$SONAR_TOKEN
-                    '''
+                    """
                 }
             }
         }
