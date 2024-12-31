@@ -16,10 +16,9 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
-                    sonar-scanner \
-                        -Dsonar.projectKey=esp8266-dhtproject \
+                    sonar-scanner -Dsonar.projectKey=esp8266-dhtproject \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://sonarqube:9000 \  # Use the container name instead of localhost
+                        -Dsonar.host.url=http://sonarqube:9000 \  // Use the container name instead of localhost
                         -Dsonar.login=$SONAR_TOKEN
                     """
                 }
