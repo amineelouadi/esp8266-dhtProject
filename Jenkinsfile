@@ -19,7 +19,7 @@ pipeline {
                     sonar-scanner \
                         -Dsonar.projectKey=esp8266-dhtproject \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.login=$SONAR_TOKEN
                     """
                 }
@@ -36,7 +36,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE_NAME}:latest .'
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
             }
         }
 
@@ -45,9 +45,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', 
                                                   passwordVariable: 'DOCKER_PASSWORD', 
                                                   usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
-                sh 'docker push ${DOCKER_IMAGE_NAME}:latest'
+                sh "docker push ${DOCKER_IMAGE_NAME}:latest"
             }
         }
 
