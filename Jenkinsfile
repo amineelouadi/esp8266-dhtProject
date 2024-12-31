@@ -34,11 +34,11 @@ pipeline {
         stage('Create Virtual Environment and Install Dependencies') {
             steps {
                 script {
-                    // Create a virtual environment
-                    sh 'python3 -m venv /root/myenv'
+                    // Create a virtual environment in /tmp/venv (writable directory)
+                    sh 'python3 -m venv /tmp/venv'
 
                     // Install dependencies in the virtual environment
-                    sh 'source /root/myenv/bin/activate && pip install -r requirements.txt'
+                    sh 'source /tmp/venv/bin/activate && pip install -r requirements.txt'
                 }
             }
         }
