@@ -34,9 +34,10 @@ pipeline {
         stage('Install Node.js and npm') {
             steps {
                 script {
-                    // Install Node.js and npm (Ubuntu-based Jenkins image)
-                    sh 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
-                    sh 'apt-get install -y nodejs'
+                    // Install Node.js and npm with sudo (make sure sudo is installed)
+                    sh 'apt-get update && apt-get install -y sudo'
+                    sh 'sudo curl -sL https://deb.nodesource.com/setup_16.x | bash -'
+                    sh 'sudo apt-get install -y nodejs'
                 }
             }
         }
