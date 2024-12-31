@@ -31,6 +31,16 @@ pipeline {
             }
         }
 
+        stage('Install Node.js and npm') {
+            steps {
+                script {
+                    // Install Node.js and npm (Ubuntu-based Jenkins image)
+                    sh 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
+                    sh 'apt-get install -y nodejs'
+                }
+            }
+        }
+
         stage('Create Virtual Environment and Install Dependencies') {
             steps {
                 script {
