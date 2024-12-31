@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Project') {
             steps {
-                git branch: 'main', url: 'https://github.com/amineelouadi/esp8266-dhtProject.git'
+                git branch: 'master', url: 'https://github.com/amineelouadi/esp8266-dhtProject.git'
             }
         }
 
