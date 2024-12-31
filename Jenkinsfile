@@ -37,8 +37,10 @@ pipeline {
                     // Create a virtual environment in /tmp/venv (writable directory)
                     sh 'python3 -m venv /tmp/venv'
 
-                    // Install dependencies in the virtual environment
-                    sh 'source /tmp/venv/bin/activate && pip install -r requirements.txt'
+                    // Activate virtual environment and install dependencies using bash
+                    sh '''
+                        /bin/bash -c "source /tmp/venv/bin/activate && pip install -r requirements.txt"
+                    '''
                 }
             }
         }
