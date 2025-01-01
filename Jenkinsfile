@@ -41,8 +41,7 @@ pipeline {
             steps {
                 // Activate the virtual environment and install dependencies
                 sh """
-                source /tmp/venv/bin/activate
-                pip install -r requirements.txt
+                . /tmp/venv/bin/activate && pip install -r requirements.txt
                 """
             }
         }
