@@ -13,22 +13,11 @@ pipeline {
             }
         }
 
-        stage('Install sudo and Dependencies') {
-            steps {
-                script {
-                    // Install sudo if it's not already available
-                    sh 'apt-get update && apt-get install -y sudo'
-                    // Install Node.js and npm
-                    sh 'sudo curl -sL https://deb.nodesource.com/setup_16.x | bash -'
-                    sh 'sudo apt-get install -y nodejs'
-                }
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool 'SonarQube Scanner'
+                    // Use the SonarQube Scanner plugin
+                    def scannerHome = tool 'SonarQube Scanner' // Ensure this matches the name configured in Jenkins
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh """
                         ${scannerHome}/bin/sonar-scanner \
@@ -42,22 +31,9 @@ pipeline {
             }
         }
 
-        stage('Create Virtual Environment and Install Dependencies') {
-            steps {
-                script {
-                    // Create a virtual environment in /tmp/venv (writable directory)
-                    sh 'python3 -m venv /tmp/venv'
-
-                    // Activate virtual environment and install dependencies using bash
-                    sh '''
-                        /bin/bash -c "source /tmp/venv/bin/activate && pip install -r requirements.txt"
-                    '''
-                }
-            }
-        }
-
         stage('Build Project') {
             steps {
+                // Assuming npm and other dependencies are already installed in the container
                 sh 'npm install'
                 sh 'npm run build'
             }
