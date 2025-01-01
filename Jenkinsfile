@@ -33,7 +33,8 @@ pipeline {
 
         stage('Create Virtual Environment') {
             steps {
-                sh 'python3 -m venv /tmp/venv' // Create a virtual environment
+                // Create a virtual environment in the workspace (no need for root permissions)
+                sh 'python3 -m venv /tmp/venv'
             }
         }
 
@@ -41,7 +42,8 @@ pipeline {
             steps {
                 // Activate the virtual environment and install dependencies
                 sh """
-                . /tmp/venv/bin/activate && pip install -r requirements.txt
+                . /tmp/venv/bin/activate
+                pip install -r requirements.txt
                 """
             }
         }
@@ -51,11 +53,8 @@ pipeline {
                 // Install npm dependencies
                 sh 'npm install'
 
-                // Create a symlink for python to point to python3 (if needed)
-                sh 'ln -s /usr/bin/python3 /usr/bin/python'
-
                 // Start the project using npm start
-                sh 'npm start' // Assuming npm start is used to run the project
+                sh 'npm start'
             }
         }
 
