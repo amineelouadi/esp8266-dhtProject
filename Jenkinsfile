@@ -35,7 +35,7 @@ pipeline {
             steps {
                 // Assuming npm and other dependencies are already installed in the container
                 sh 'npm install'
-                sh 'npm run build'
+                sh 'npm start'
             }
         }
 
