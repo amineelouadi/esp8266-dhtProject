@@ -43,6 +43,7 @@ pipeline {
                 // Activate the virtual environment and install dependencies
                 sh """
                 . /tmp/venv/bin/activate
+                python3 -m pip install --upgrade pip
                 pip install -r requirements.txt
                 """
             }
@@ -53,8 +54,11 @@ pipeline {
                 // Install npm dependencies
                 sh 'npm install'
 
-                // Start the project using npm start
-                sh 'npm start'
+                // Make sure the virtual environment is active when starting the Django project
+                sh """
+                . /tmp/venv/bin/activate
+                python3 manage.py runserver 0.0.0.0:8000
+                """
             }
         }
 
