@@ -57,7 +57,7 @@ pipeline {
                 // Make sure the virtual environment is active when starting the Django project
                 sh """
                 . /tmp/venv/bin/activate
-                python3 manage.py runserver 0.0.0.0:8000
+                nohup python3 manage.py runserver 0.0.0.0:8000 & # Run the server in the background
                 """
             }
         }
