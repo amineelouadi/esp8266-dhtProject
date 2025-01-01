@@ -31,11 +31,23 @@ pipeline {
             }
         }
 
+        stage('Install Python Requirements') {
+            steps {
+                // Install Python dependencies from requirements.txt
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
         stage('Build Project') {
             steps {
-                // Assuming npm and other dependencies are already installed in the container
+                // Install npm dependencies
                 sh 'npm install'
-                sh 'npm start'
+
+                // Create a symlink for python to point to python3 (if needed)
+                sh 'ln -s /usr/bin/python3 /usr/bin/python'
+
+                // Start the project using npm start
+                sh 'npm start' // Assuming npm start is used to run the project
             }
         }
 
